@@ -1,4 +1,10 @@
 {
-  "tag": "",
-  "files": {}
+  "tag": "build-20260921-094055",
+  "files": {
+    "LICENSE-Iosevka-OFL.md": "sha256-S6U8fByzknmq5fjX0iBUxIXHEWmSDlo27QmLEV4uPF0=",
+    "PlemolJPSymbols-Bold.ttf": "sha256-M7FbK/ysowAMFq5eQhSZ2KTe4MeS07mwIEIWgFTeKBY=",
+    "PlemolJPSymbols-BoldItalic.ttf": "sha256-VMpWF4ZXFjRkjgOvVT4sJwcUdknAHyZUmNfaWIATMdg=",
+    "PlemolJPSymbols-Italic.ttf": "sha256-xRcNicp2nN3wz6Em/0s61JBEl7aSQyS3TSw0m01Gqnk=",
+    "PlemolJPSymbols-Regular.ttf": "sha256-Bg9W+kMJN6TQL2XL423jYXci0X1NLTFUjOg6Pwm+B4c="
+  }
 }
