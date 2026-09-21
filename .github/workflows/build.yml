@@ -1,0 +1,102 @@
+name: build
+
+on:
+  workflow_dispatch:
+    inputs:
+      plemoljp_version:
+        description: PlemolJP release used as the reference
+        default: v3.1.0
+      iosevka_ref:
+        description: Iosevka branch, tag or commit
+        default: main
+
+env:
+  PLEMOLJP_VERSION: ${{ inputs.plemoljp_version }}
+  IOSEVKA_REF: ${{ inputs.iosevka_ref }}
+  VARIANT: PlemolJPConsole
+  PLAN: PlemolJPSymbols
+
+concurrency:
+  group: build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: be5invis/Iosevka
+          ref: ${{ inputs.iosevka_ref }}
+          path: iosevka
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: iosevka/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build Iosevka plan
+        working-directory: iosevka
+        run: |
+          cp ../private-build-plans.toml .
+          npm ci
+          npm run build -- --jCmd="$(nproc)" "ttf-unhinted::${PLAN}"
+
+      - name: Fetch reference font
+        run: |
+          mkdir -p ref
+          curl -fsSL -o ref/plemoljp.zip \
+            "https://github.com/yuru7/PlemolJP/releases/download/${PLEMOLJP_VERSION}/PlemolJP_${PLEMOLJP_VERSION}.zip"
+          unzip -j -o ref/plemoljp.zip \
+            "PlemolJP_${PLEMOLJP_VERSION}/${VARIANT}/${VARIANT}-Regular.ttf" -d ref
+
+      - name: Metrics report
+        run: |
+          python scripts/measure_metrics.py \
+            "ref/${VARIANT}-Regular.ttf" \
+            "iosevka/dist/${PLAN}/TTF-Unhinted/${PLAN}-Regular.ttf" || true
+
+      - name: Subset
+        run: |
+          python scripts/plemol_symbols.py \
+            --reference "ref/${VARIANT}-Regular.ttf" \
+            --built "iosevka/dist/${PLAN}" \
+            --out out
+          cp iosevka/LICENSE.md out/LICENSE-Iosevka-OFL.md
+
+      - name: Release and pin hashes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-$(date -u +%Y%m%d-%H%M%S)"
+          {
+            echo "Iosevka ${IOSEVKA_REF} @ $(git -C iosevka rev-parse HEAD)"
+            echo "Reference: PlemolJP ${PLEMOLJP_VERSION} (${VARIANT})"
+          } > notes.txt
+          gh release create "$tag" out/* --title "$tag" --notes-file notes.txt
+          jq -n --arg tag "$tag" '{tag: $tag, files: {}}' > hashes.json
+          for f in out/*; do
+            hash="sha256-$(openssl dgst -sha256 -binary "$f" | base64 -w0)"
+            jq --arg n "$(basename "$f")" --arg h "$hash" '.files[$n] = $h' hashes.json > hashes.tmp
+            mv hashes.tmp hashes.json
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add hashes.json
+          git commit -m "Pin ${tag}"
+          git push

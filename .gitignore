@@ -1,0 +1,9 @@
+iosevka/
+ref/
+out/
+dist/
+*.zip
+__pycache__/
+.venv/
+notes.txt
+hashes.tmp

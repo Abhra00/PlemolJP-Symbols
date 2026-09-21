@@ -1,0 +1,41 @@
+[buildPlans.PlemolJPSymbols]
+family = "PlemolJP Symbols"
+spacing = "fixed"
+serifs = "sans"
+noCvSs = true
+noLigation = true
+
+[buildPlans.PlemolJPSymbols.weights.Regular]
+shape = 400
+menu = 400
+css = 400
+
+[buildPlans.PlemolJPSymbols.weights.Bold]
+shape = 700
+menu = 700
+css = 700
+
+[buildPlans.PlemolJPSymbols.slopes.Upright]
+angle = 0
+shape = "upright"
+menu = "upright"
+css = "normal"
+
+[buildPlans.PlemolJPSymbols.slopes.Italic]
+angle = 9
+shape = "italic"
+menu = "italic"
+css = "italic"
+
+[buildPlans.PlemolJPSymbols.widths.Normal]
+shape = 528
+menu = 5
+css = "normal"
+
+[buildPlans.PlemolJPSymbols.metricOverride]
+cap = 677
+ascender = 718
+xHeight = 501
+symbolMid = 295
+parenSize = 835
+leading = 1175
