@@ -1,10 +1,10 @@
 {
-  "tag": "build-20260928-144122",
+  "tag": "build-20260928-145304",
   "files": {
     "LICENSE-Iosevka-OFL.md": "sha256-S6U8fByzknmq5fjX0iBUxIXHEWmSDlo27QmLEV4uPF0=",
-    "PlemolJPSymbols-Bold.ttf": "sha256-TWcgB2QeLw2Y1Qx4P8WbPa5r9WVMo5SVDp9wPDRuf8o=",
-    "PlemolJPSymbols-BoldItalic.ttf": "sha256-J5wRpYXqEc2H0aIYk7BdsJcIBDH/zNL0cRT315atIa0=",
-    "PlemolJPSymbols-Italic.ttf": "sha256-zbkICfFTGo8AueKLXxYKvCl4z8DxRaVGD4B05v0EAAw=",
-    "PlemolJPSymbols-Regular.ttf": "sha256-Exy7/gvKnkvGolzKexEBWj2U5VnMfCTtiaVZ5Q0dW8k="
+    "PlemolJPSymbols-Bold.ttf": "sha256-DaKJFt5Cg4UZJ8EyVlAna6dHqm7bXRskXrt7n95Lq1E=",
+    "PlemolJPSymbols-BoldItalic.ttf": "sha256-Uhh2hZuEaRB9mYtqRdesgtK73VwHliBIC5KLHH5lYjQ=",
+    "PlemolJPSymbols-Italic.ttf": "sha256-+z/nwSULmJhhLnPUh4fhFcg7CuVY/s2vwLeldGFRKiI=",
+    "PlemolJPSymbols-Regular.ttf": "sha256-00tQonPHJzTq/6WC3K0CogREA1xKDYh6BUZ792juAT8="
   }
 }
